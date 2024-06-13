@@ -1,16 +1,29 @@
 # Output
+output "project" {
+  description = "Service Projects Information"
+  value       = local.active_projects
+}
+
 output "network" {
+  description = "Shared VPC Network Information"
   value = {
-    name = lookup(data.google_compute_network.shared_vpc, "name", null)
-    id   = lookup(data.google_compute_network.shared_vpc, "id", null)
+    id          = lookup(data.google_compute_network.shared_vpc, "id", null)
+    name        = lookup(data.google_compute_network.shared_vpc, "name", null)
+    num_subnets = length(local.subnets)
   }
 }
 output "subnets" {
+  description = "Shared VPC available subnets"
   value = [for i, v in local.subnets :
     {
-      id     = "${replace(v, "https://www.googleapis.com/compute/v1/", "")}"
-      name   = element(reverse(split("/", v)), 0)
-      region = element(reverse(split("/", v)), 2)
+      name   = v.name
+      region = v.region
     }
   ]
+}
+output "all_subnets" {
+  value = data.google_compute_subnetwork.subnets
+}
+output "compute_sa_accounts" {
+  value = { for k, v in local.projects : k => v.compute_sa_accounts }
 }

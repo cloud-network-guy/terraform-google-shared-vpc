@@ -1,5 +1,10 @@
+variable "folder_id" {
+  description = "Folder ID containing list of Projects to examine"
+  type        = string
+  default     = null
+}
 variable "project_id" {
-  description = "Project ID of the GCP Project"
+  description = "Specific Project ID of the GCP Project"
   type        = string
   default     = null
 }
@@ -18,4 +23,7 @@ variable "region" {
   type        = string
   default     = "us-central1"
 }
-
+variable "special_subnets" {
+  description = "Substrings to ignore in subnets list"
+  default     = []
+}
